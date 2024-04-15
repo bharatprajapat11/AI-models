@@ -1,0 +1,8 @@
+POST http://localhost:5000/generate
+Content-Type: application/json
+
+{
+    "prompt": "Once upon a time, there was a",
+    "max_length": 100
+}
+̥̥

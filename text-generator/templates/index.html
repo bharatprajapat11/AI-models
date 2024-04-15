@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Generation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        form {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        
+        button {
+            margin-top: 10px;
+            padding: 8px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        #response-container {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            min-height: 100px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Text Generation</h1>
+    <form id="prompt-form">
+        <label for="prompt">Enter Prompt:</label>
+        <input type="text" id="prompt" name="prompt">
+        <button type="submit">Generate Response</button>
+    </form>
+    <div id="response-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('prompt-form');
+            const responseContainer = document.getElementById('response-container');
+        
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const prompt = document.getElementById('prompt').value;
+                console.log('Prompt:', prompt);
+                generateResponse(prompt);
+            });
+        
+            async function generateResponse(prompt) {
+                try {
+                    const response = await fetch('/generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ prompt: prompt })
+                    });
+                    const data = await response.json();
+                    console.log('Response:', data);
+                    displayResponse(data.response);
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        
+            function displayResponse(response) {
+                responseContainer.textContent = response;
+            }
+        });
+        
+    </script>
+</body>
+</html>
